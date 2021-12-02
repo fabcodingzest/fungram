@@ -13,7 +13,7 @@ import PostCard from './components/PostCard';
 import api from './api/api';
 
 function App() {
-     const [posts, setPosts] = useState([]);
+  const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   useEffect(() => {
@@ -43,7 +43,11 @@ function App() {
     <div>
       <Box bg={'teal.600'}>
         <Container as={'header'} maxW={'container.xl'} py={6}>
-          <Flex w={'full'} alignItems={'center'} justifyContent={'space-between'}>
+          <Flex
+            w={'full'}
+            alignItems={'center'}
+            justifyContent={'space-between'}
+          >
             <Text
               color={'white'}
               fontSize={'4xl'}
@@ -71,23 +75,26 @@ function App() {
         </Grid>
       </Container>
       <Box bg={'teal.600'}>
-        <Container as={'footer'} maxW={'container.xl'} py={6}>
-          <Text
-            color={'white'}
-            fontSize={'sm'}
-            fontWeight={'600'}
-            align="center"
-          >
+        <Container as={'footer'} maxW={'container.xl'} align={'center'} py={6}>
+          <Text fontSize={'sm'}>
             &copy; 2021 Made by{' '}
-            <Link color={'teal.100'} href="http://github.com/fabcodingzest">
+            <Link fontWeight={'600'} href="http://github.com/fabcodingzest">
               Fab
+            </Link>
+          </Text>
+          <Text fontSize={'sm'}>
+            Checkout the code at{' '}
+            <Link
+              fontWeight={'600'}
+              href="http://github.com/fabcodingzest"
+            >
+              GitHub
             </Link>
           </Text>
         </Container>
       </Box>
     </div>
   );
-
 }
 
 export default App;
