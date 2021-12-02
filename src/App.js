@@ -1,42 +1,93 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
-  ChakraProvider,
   Box,
   Text,
   Link,
-  VStack,
-  Code,
   Grid,
-  theme,
+  Container,
+  Flex,
+  Spinner,
 } from '@chakra-ui/react';
-import { ColorModeSwitcher } from './ColorModeSwitcher';
-import { Logo } from './Logo';
+import { ColorModeSwitcher } from './components/ColorModeSwitcher';
+import PostCard from './components/PostCard';
+import api from './api/api';
 
 function App() {
+     const [posts, setPosts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      try {
+        const res = await api.get('/');
+        setPosts(res.data.data);
+      } catch (error) {
+        setError(error.message);
+      }
+      setLoading(false);
+    };
+    fetchData();
+  }, []);
+
+  console.log(posts);
+
+  if (loading)
+    return (
+      <Flex alignItems={'center'} justifyContent={'center'} minH={'100vh'}>
+        <Spinner size="xl" thickness="4px" />
+      </Flex>
+    );
+  if (error) return <Text>{error}</Text>;
   return (
-    <ChakraProvider theme={theme}>
-      <Box textAlign="center" fontSize="xl">
-        <Grid minH="100vh" p={3}>
-          <ColorModeSwitcher justifySelf="flex-end" />
-          <VStack spacing={8}>
-            <Logo h="40vmin" pointerEvents="none" />
-            <Text>
-              Edit <Code fontSize="xl">src/App.js</Code> and save to reload.
-            </Text>
-            <Link
-              color="teal.500"
-              href="https://chakra-ui.com"
-              fontSize="2xl"
-              target="_blank"
-              rel="noopener noreferrer"
+    <div>
+      <Box bg={'teal.600'}>
+        <Container as={'header'} maxW={'container.xl'} py={6}>
+          <Flex w={'full'} alignItems={'center'} justifyContent={'space-between'}>
+            <Text
+              color={'white'}
+              fontSize={'4xl'}
+              fontWeight={'600'}
+              textTransform={'uppercase'}
             >
-              Learn Chakra
-            </Link>
-          </VStack>
-        </Grid>
+              fungram
+            </Text>
+            <ColorModeSwitcher justifySelf="flex-end" />
+          </Flex>
+        </Container>
       </Box>
-    </ChakraProvider>
+
+      <Container as="main" maxW="container.xl" my={10}>
+        <Grid
+          templateColumns={{
+            base: 'repeat(1, 1fr)',
+            md: 'repeat(2, 1fr)',
+            lg: 'repeat(3, 1fr)',
+          }}
+        >
+          {posts.map(item => (
+            <PostCard key={item.id} data={item} />
+          ))}
+        </Grid>
+      </Container>
+      <Box bg={'teal.600'}>
+        <Container as={'footer'} maxW={'container.xl'} py={6}>
+          <Text
+            color={'white'}
+            fontSize={'sm'}
+            fontWeight={'600'}
+            align="center"
+          >
+            &copy; 2021 Made by{' '}
+            <Link color={'teal.100'} href="http://github.com/fabcodingzest">
+              Fab
+            </Link>
+          </Text>
+        </Container>
+      </Box>
+    </div>
   );
+
 }
 
 export default App;
