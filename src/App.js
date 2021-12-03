@@ -30,15 +30,17 @@ function App() {
     fetchData();
   }, []);
 
-  console.log(posts);
-
   if (loading)
     return (
       <Flex alignItems={'center'} justifyContent={'center'} minH={'100vh'}>
         <Spinner size="xl" thickness="4px" />
       </Flex>
     );
-  if (error) return <Text>{error}</Text>;
+  if (error) return (
+    <Flex alignItems={'center'} justifyContent={'center'} minH={'100vh'}>
+      {error}
+    </Flex>
+  );
   return (
     <div>
       <Box bg={'teal.600'}>
